@@ -115,7 +115,8 @@ int BravePermissionManager::RequestPermissions(
                                permissions);
     pending_requests_[request_id_] =
         { render_process_id, render_frame_id, callback, permissions.size() };
-    request_handler_.Run(current_origin, requesting_origin, permissions, callback);
+    request_handler_.Run(current_origin, requesting_origin, permissions,
+      callback);
     return request_id_;
   }
 

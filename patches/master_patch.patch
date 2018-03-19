@@ -240,10 +240,10 @@ index cb8bd43871271083038b0555340d4c328f9b8bae..1b442fbf4dfebfc709e90021bb1600a9
  
    return ps;
 diff --git a/chrome/browser/printing/print_view_manager_base.cc b/chrome/browser/printing/print_view_manager_base.cc
-index 8fbcb35a212f16ae6a040ddc0205d2a7b7c9ba95..12a9341a7749989439060cbd79b8f38148b90968 100644
+index b87fa487ccbae00baf1a7c6692bc85508597b624..41b1dd7daed5b5ba01cafc70906f773db269f148 100644
 --- a/chrome/browser/printing/print_view_manager_base.cc
 +++ b/chrome/browser/printing/print_view_manager_base.cc
-@@ -72,13 +72,13 @@ using PrintSettingsCallback =
+@@ -73,13 +73,13 @@ using PrintSettingsCallback =
  
  void ShowWarningMessageBox(const base::string16& message) {
    // Runs always on the UI thread.
@@ -1360,7 +1360,7 @@ index 087bc630062a762edb1006b0080f037935aa52c7..851cd14cef29bc79e53040181bd04d70
  }
  
 diff --git a/content/browser/renderer_host/render_widget_host_view_mac.mm b/content/browser/renderer_host/render_widget_host_view_mac.mm
-index 2fedef58a264a62c5023f61d1270d7735abe758e..f2378b78936ef61f2dcc4e78eb0ef431b8aef458 100644
+index 477374eb92204634f19906ccc9e84deee83a400b..31914504adf3149c025f4a932d10afe3ad32d0f6 100644
 --- a/content/browser/renderer_host/render_widget_host_view_mac.mm
 +++ b/content/browser/renderer_host/render_widget_host_view_mac.mm
 @@ -137,6 +137,12 @@ RenderWidgetHostView* GetRenderWidgetHostViewToUse(
@@ -1376,7 +1376,7 @@ index 2fedef58a264a62c5023f61d1270d7735abe758e..f2378b78936ef61f2dcc4e78eb0ef431
  // These are not documented, so use only after checking -respondsToSelector:.
  @interface NSApplication (UndocumentedSpeechMethods)
  - (void)speakString:(NSString*)string;
-@@ -1615,6 +1621,10 @@ void RenderWidgetHostViewMac::SetActive(bool active) {
+@@ -1628,6 +1634,10 @@ void RenderWidgetHostViewMac::SetActive(bool active) {
    if (render_widget_host_) {
      render_widget_host_->SetActive(active);
      if (active) {
@@ -1387,7 +1387,7 @@ index 2fedef58a264a62c5023f61d1270d7735abe758e..f2378b78936ef61f2dcc4e78eb0ef431
        if (HasFocus())
          render_widget_host_->Focus();
      } else {
-@@ -1885,7 +1895,14 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
+@@ -1900,7 +1910,14 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
  }
  
  - (BOOL)acceptsFirstMouse:(NSEvent*)theEvent {
@@ -1402,7 +1402,7 @@ index 2fedef58a264a62c5023f61d1270d7735abe758e..f2378b78936ef61f2dcc4e78eb0ef431
  }
  
  - (void)setCloseOnDeactivate:(BOOL)b {
-@@ -2118,8 +2135,10 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
+@@ -2133,8 +2150,10 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
    if (EventIsReservedBySystem(theEvent))
      return;
  
@@ -1413,7 +1413,7 @@ index 2fedef58a264a62c5023f61d1270d7735abe758e..f2378b78936ef61f2dcc4e78eb0ef431
  
    if ([theEvent type] == NSFlagsChanged) {
      // Ignore NSFlagsChanged events from the NumLock and Fn keys as
-@@ -2983,6 +3002,11 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
+@@ -2998,6 +3017,11 @@ Class GetRenderWidgetHostViewCocoaClassForTesting() {
  // move) for the given event. Customize here to be more selective about which
  // key presses to autohide on.
  - (BOOL)shouldAutohideCursorForEvent:(NSEvent*)event {

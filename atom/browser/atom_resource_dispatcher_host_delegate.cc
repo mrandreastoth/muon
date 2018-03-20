@@ -56,8 +56,8 @@ void HandleExternalProtocolInUI(
 
   GURL escaped_url(net::EscapeExternalHandlerValue(url.spec()));
   auto callback = base::Bind(&OnOpenExternal, escaped_url);
-  permission_helper->RequestOpenExternalPermission(callback, has_user_gesture,
-    url);
+  permission_helper->RequestOpenExternalPermission(url, has_user_gesture,
+    callback);
 }
 
 }  // namespace

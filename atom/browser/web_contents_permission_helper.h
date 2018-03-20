@@ -33,8 +33,8 @@ class WebContentsPermissionHelper
       const base::Callback<void(bool)>& callback);
   void RequestPointerLockPermission(bool user_gesture);
   void RequestOpenExternalPermission(
-      const base::Callback<void(bool)>& callback,
-      bool user_gesture, const GURL& requesting_url);
+      const GURL& frame_url, bool user_gesture,
+      const base::Callback<void(bool)>& callback);
   void RequestProtocolRegistrationPermission(
       const base::Callback<void(bool)>& callback,
       bool user_gesture);

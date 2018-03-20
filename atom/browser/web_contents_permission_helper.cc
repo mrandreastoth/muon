@@ -55,15 +55,15 @@ WebContentsPermissionHelper::~WebContentsPermissionHelper() {
 void WebContentsPermissionHelper::RequestPermission(
     content::PermissionType permission,
     const base::Callback<void(bool)>& callback,
-    const GURL& requesting_url, bool user_gesture) {
+    const GURL& frame_url, bool user_gesture) {
   auto rfh = web_contents_->GetMainFrame();
   auto permission_manager = static_cast<brave::BravePermissionManager*>(
       web_contents_->GetBrowserContext()->GetPermissionManager());
   GURL url;
-  if (requesting_url.is_empty()) {
-    url = web_contents_->GetURL();
+  if (frame_url.is_empty()) {
+    url = web_contents_->GetLastCommittedURL();
   } else {
-    url = requesting_url;
+    url = frame_url;
   }
 
   permission_manager->RequestPermission(
@@ -101,12 +101,12 @@ void WebContentsPermissionHelper::RequestPointerLockPermission(
 }
 
 void WebContentsPermissionHelper::RequestOpenExternalPermission(
-    const base::Callback<void(bool)>& callback,
+    const GURL& frame_url,
     bool user_gesture,
-    const GURL& requesting_url) {
+    const base::Callback<void(bool)>& callback) {
   RequestPermission((content::PermissionType)(PermissionType::OPEN_EXTERNAL),
                     callback,
-                    requesting_url,
+                    frame_url,
                     user_gesture);
 }
 

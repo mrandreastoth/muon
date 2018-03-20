@@ -61,7 +61,7 @@ void WebContentsPermissionHelper::RequestPermission(
       web_contents_->GetBrowserContext()->GetPermissionManager());
   GURL url;
   if (requesting_url.is_empty()) {
-    url = web_contents_->GetLastCommittedURL();
+    url = web_contents_->GetURL();
   } else {
     url = requesting_url;
   }

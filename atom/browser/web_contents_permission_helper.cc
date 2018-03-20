@@ -59,9 +59,15 @@ void WebContentsPermissionHelper::RequestPermission(
   auto rfh = web_contents_->GetMainFrame();
   auto permission_manager = static_cast<brave::BravePermissionManager*>(
       web_contents_->GetBrowserContext()->GetPermissionManager());
+  GURL url;
+  if (requesting_url.is_empty()) {
+    url = web_contents_->GetLastCommittedURL();
+  } else {
+    url = requesting_url;
+  }
 
   permission_manager->RequestPermission(
-      permission, rfh, requesting_url, user_gesture,
+      permission, rfh, url, user_gesture,
       base::Bind(&OnPermissionResponse, callback));
 }
 

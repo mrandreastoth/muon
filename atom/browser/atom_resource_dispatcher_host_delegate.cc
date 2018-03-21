@@ -83,8 +83,7 @@ bool AtomResourceDispatcherHostDelegate::HandleExternalProtocol(
                                      url,
                                      info->GetFrameTreeNodeId(),
                                      render_frame_host,
-                                     info->HasUserGesture()
-                                     ));
+                                     info->HasUserGesture()));
   return true;
 }
 

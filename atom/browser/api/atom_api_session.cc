@@ -307,6 +307,12 @@ void SetProxyInIO(scoped_refptr<net::URLRequestContextGetter> getter,
       BrowserThread::UI, FROM_HERE, callback);
 }
 
+void ClearHSTSDataInIO(scoped_refptr<net::URLRequestContextGetter> getter) {
+  auto request_context = getter->GetURLRequestContext();
+  request_context->transport_security_state()->
+    DeleteAllDynamicDataSince(base::Time::UnixEpoch());
+}
+
 void SetCertVerifyProcInIO(
     const scoped_refptr<net::URLRequestContextGetter>& context_getter,
     const AtomCertVerifier::VerifyProc& proc) {
@@ -419,9 +425,8 @@ void Session::DoCacheAction(const net::CompletionCallback& callback) {
 }
 
 void Session::ClearHSTSData() {
-  auto request_context = request_context_getter_->GetURLRequestContext();
-  request_context->transport_security_state()->
-    DeleteAllDynamicDataSince(base::Time::UnixEpoch());
+  BrowserThread::PostTask(BrowserThread::IO, FROM_HERE,
+      base::Bind(&ClearHSTSDataInIO, request_context_getter_));
 }
 
 void Session::ClearStorageData(mate::Arguments* args) {

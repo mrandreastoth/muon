@@ -11,6 +11,7 @@
 #include "atom/common/platform_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
 #include "net/base/escape.h"
 #include "net/ssl/client_cert_store.h"
 #include "url/gurl.h"
@@ -43,11 +44,15 @@ void OnOpenExternal(const GURL& escaped_url,
 
 void HandleExternalProtocolInUI(
     const GURL& url,
-    const content::ResourceRequestInfo::WebContentsGetter& web_contents_getter,
+    int frame_tree_node_id,
+    content::RenderFrameHost* rfh,
     bool has_user_gesture) {
-  content::WebContents* web_contents = web_contents_getter.Run();
-  if (!web_contents)
-    return;
+  content::WebContents* web_contents =
+    content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+
+  if (!web_contents) {
+    web_contents = content::WebContents::FromRenderFrameHost(rfh);
+  }
 
   auto permission_helper =
       WebContentsPermissionHelper::FromWebContents(web_contents);
@@ -68,11 +73,18 @@ AtomResourceDispatcherHostDelegate::AtomResourceDispatcherHostDelegate() {
 bool AtomResourceDispatcherHostDelegate::HandleExternalProtocol(
     const GURL& url,
     content::ResourceRequestInfo* info) {
+
+  auto render_frame_host =
+    content::RenderFrameHost::FromID(info->GetChildID(),
+      info->GetRenderFrameID());
+
   BrowserThread::PostTask(BrowserThread::UI, FROM_HERE,
                           base::Bind(&HandleExternalProtocolInUI,
                                      url,
-                                     info->GetWebContentsGetterForRequest(),
-                                     info->HasUserGesture()));
+                                     info->GetFrameTreeNodeId(),
+                                     render_frame_host,
+                                     info->HasUserGesture()
+                                     ));
   return true;
 }
 
